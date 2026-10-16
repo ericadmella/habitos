@@ -50,48 +50,52 @@ class _InicioScreenState extends State<InicioScreen> {
       // SingleChildScrollView: evita que el contenido quede cortado con el teclado.
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 16),
-            Icon(Icons.eco_rounded, size: 72, color: tema.colorScheme.primary),
-            const SizedBox(height: 16),
-            Text(
-              'HabitosApp',
-              textAlign: TextAlign.center,
-              style: tema.textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold),
+        child: Center( // NOU: centra el contenido en pantallas anchas (ordenador)
+          child: ConstrainedBox( // NOU: limita el ancho máximo
+            constraints: const BoxConstraints(maxWidth: 600), // NOU
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 16),
+                Icon(Icons.eco_rounded, size: 72, color: tema.colorScheme.primary),
+                const SizedBox(height: 16),
+                Text(
+                  'HabitosApp',
+                  textAlign: TextAlign.center,
+                  style: tema.textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 32),
+                TextField(
+                  controller: _nombreCtrl,
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(
+                    labelText: 'Nombre del usuario',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: _objetivoCtrl,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: 'Objetivo diario de hábitos',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                if (_error != null) ...[
+                  const SizedBox(height: 8),
+                  Text(_error!, style: TextStyle(color: tema.colorScheme.error)),
+                ],
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: _comenzar,
+                  style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(52)),
+                  child: const Text('Comenzar'),
+                ),
+              ],
             ),
-            const SizedBox(height: 32),
-            TextField(
-              controller: _nombreCtrl,
-              textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                labelText: 'Nombre del usuario',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _objetivoCtrl,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Objetivo diario de hábitos',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            if (_error != null) ...[
-              const SizedBox(height: 8),
-              Text(_error!, style: TextStyle(color: tema.colorScheme.error)),
-            ],
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _comenzar,
-              style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(52)),
-              child: const Text('Comenzar'),
-            ),
-          ],
-        ),
+          ), // NOU: cierra ConstrainedBox
+        ), // NOU: cierra Center
       ),
     );
   }
-}

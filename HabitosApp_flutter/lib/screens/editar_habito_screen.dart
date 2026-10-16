@@ -58,7 +58,7 @@ class _EditarHabitoScreenState extends State<EditarHabitoScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (seleccionado) const Icon(Icons.check, size: 18),
+            if (seleccionado) const Icon(Icons.check, size: 18, color: Colors.white),
             if (seleccionado) const SizedBox(width: 4),
             Text(c.nombre),
           ],
@@ -75,48 +75,53 @@ class _EditarHabitoScreenState extends State<EditarHabitoScreen> {
       appBar: AppBar(title: const Text('Editar hábito')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _nombreCtrl,
-              decoration: const InputDecoration(
-                labelText: 'Nombre del hábito',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Text('Color', style: tema.textTheme.titleMedium),
-            const SizedBox(height: 8),
-            // Botones de color agrupados en una Row.
-            Row(
+        child: Center( // NOU: centra el contenido en pantallas anchas (ordenador)
+          child: ConstrainedBox( // NOU: limita el ancho máximo
+            constraints: const BoxConstraints(maxWidth: 600), // NOU
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _botonColor(ColorHabito.azul),
-                const SizedBox(width: 8),
-                _botonColor(ColorHabito.verde),
-                const SizedBox(width: 8),
-                _botonColor(ColorHabito.naranja),
+                TextField(
+                  controller: _nombreCtrl,
+                  decoration: const InputDecoration(
+                    labelText: 'Nombre del hábito',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Text('Color', style: tema.textTheme.titleMedium),
+                const SizedBox(height: 8),
+                // Botones de color agrupados en una Row.
+                Row(
+                  children: [
+                    _botonColor(ColorHabito.azul),
+                    const SizedBox(width: 8),
+                    _botonColor(ColorHabito.verde),
+                    const SizedBox(width: 8),
+                    _botonColor(ColorHabito.naranja),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Seleccionado: ${_colorSeleccionado.nombre}',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: _colorSeleccionado.color),
+                ),
+                const SizedBox(height: 32),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(onPressed: _cancelar, child: const Text('Cancelar')),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(onPressed: _guardar, child: const Text('Guardar')),
+                    ),
+                  ],
+                ),
               ],
             ),
-            const SizedBox(height: 12),
-            Text(
-              'Seleccionado: ${_colorSeleccionado.nombre}',
-              style: TextStyle(fontWeight: FontWeight.bold, color: _colorSeleccionado.color),
-            ),
-            const SizedBox(height: 32),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(onPressed: _cancelar, child: const Text('Cancelar')),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton(onPressed: _guardar, child: const Text('Guardar')),
-                ),
-              ],
-            ),
-          ],
-        ),
+          ), // NOU: cierra ConstrainedBox
+        ), // NOU: cierra Center
       ),
     );
   }
